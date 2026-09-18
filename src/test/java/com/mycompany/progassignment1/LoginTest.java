@@ -98,6 +98,34 @@ public class LoginTest {
     // login test
     
     
+    @Test
+    public void testLoginSuccessful() {
+        login.registerUser("kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertTrue(login.loginuser("kyl_1", "Ch&&sec@ke99!"));
+    }
+ 
+    @Test
+    public void testLoginFailed() {
+        login.registerUser("kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        assertFalse(login.loginuser("kyl_1", "wrongPassword1!"));
+    }
+ 
+    @Test
+    public void testReturnLoginStatusSuccess() {
+        login.registerUser("kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        boolean loggedIn = login.loginuser("kyl_1", "Ch&&sec@ke99!");
+        assertEquals("Welcome Kyle, Smith it is great to see you again.",
+                login.returnLoginStatus(loggedIn, "Kyle", "Smith"));
+    }
+ 
+    @Test
+    public void testReturnLoginStatusFailure() {
+        login.registerUser("kyl_1", "Ch&&sec@ke99!", "+27838968976", "Kyle", "Smith");
+        boolean loggedIn = login.loginuser("kyl_1", "wrong");
+        assertEquals("Username or password incorrect, please try again.",
+                login.returnLoginStatus(loggedIn, "Kyle", "Smith"));
+    }
+    
     
     public LoginTest() {
     }
