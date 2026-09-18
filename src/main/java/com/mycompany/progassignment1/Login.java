@@ -13,16 +13,12 @@ import java.util.regex.Pattern;
 class Login {
    
     
-    //store user inf
-    String storedUsername;
-    String storePassword;
-    String storeCellPhone;
-    String storeFirstName;
-    String storeLastName;
-    private String storedPassword;
-    private String storedCellPhone;
-    private String storedFirstName;
-    private String storedLastName;
+    //store user info
+     String storedUsername;
+     String storedPassword;
+     String storedCellPhone;
+     String storedFirstName;
+     String storedLastName;
     
     //check if username contain an underscore and is no more tha 5 characters long
     
@@ -35,10 +31,7 @@ class Login {
         if (!username.contains("_")){
              return false;
         }
-        if (username.length() >5){
-             return false;
-        }
-         return true;
+        return username.length()<= 5;
     }
     
     
@@ -87,8 +80,12 @@ class Login {
        
     }
     
-    // 4. Check SA cell phone number (Regex required by rubric)
+    // Check SA cell phone number (Regex required by rubric)
     public boolean checkCellPhoneNumber(String cellPhone) {
+        
+        if (cellPhone == null){
+            return false;
+        }
         // Regex: Starts with +27, followed by 9 digits
         String regex = "^\\+27[0-9]{9}$"; 
         return Pattern.matches(regex, cellPhone);
@@ -99,46 +96,71 @@ class Login {
     public String registerUser(String username, String password, String cellPhone, String firstName, String lastName) {
         // Check Username
         if (!checkUserName(username)) {
-            return "Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.";
+            return "Username is not correctly formatted; please ensure that your username "
+                    + " contains an underscore and is no more than five characters in length.";
         }
         
         //  Check Password
         if (!checkPasswordComplexity(password)) {
-            return "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
+            return "Password is not correctly formatted; please ensure that the password"
+                    + " contains at least eight characters, a capital letter, a number, "
+                    + "and a special character.";
         }
         
         //Check Cell Phone
         if (!checkCellPhoneNumber(cellPhone)) {
-            return "Cell phone number incorrectly formatted or does not contain international code.";
+            return "Cell phone number incorrectly formatted or does not contain "
+                    + "international code.";
         }
 
         // If all checks pass, store the details so we can use them for login later
-        this.storedUsername = username;
+       this.storedUsername = username;
         this.storedPassword = password;
         this.storedCellPhone = cellPhone;
         this.storedFirstName = firstName;
         this.storedLastName = lastName;
         // Return success message
-        return "Username successfully captured.\nPassword successfully captured.\nCell phone number successfully added.";
+        return "Username successfully captured."
+                + "\nPassword successfully captured."
+                + "\nCell phone number successfully added.";
     }
 
      public boolean loginuser(String loginusername, String loginPassword) {
          
         if (this.storedUsername == null || this.storedPassword == null){
-         return false;}
-        return false;
-        
-        
+         return false;
+        }   
+        return this.storedUsername.equals(loginusername) && this.storedPassword.equals(loginPassword);
    
      }
+     
+     public String returnLoginStatus (boolean loggedIn, String firstName, String lastName){
+         
+         if (loggedIn){
+             return "Welcome " + firstName + ", " + lastName
+                    + " it is great to see you again.";
+         }
+            return "Username or password is incorrect, "
+                    + "please try again." ;
+     }
 
-    String returnLoginStatus(boolean loggedIn, String firstName, String lastName) {
-      
-        return null;
-      
-    }
-       
     
+      
+     
+       
+    public String getStoredFirstName() {
+        return storedFirstName;
+    }
+ 
+    public String getStoredLastName() {
+        return storedLastName;
+    }
+ 
+    public String getStoredCellPhone() {
+        return storedCellPhone;
+    } 
     
    
 }
+
+

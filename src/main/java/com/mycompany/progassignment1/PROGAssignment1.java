@@ -37,12 +37,12 @@ public class PROGAssignment1 {
         String cellPhone = scanner.nextLine();
         
         String registrationMessage = loginSystem.registerUser(username, password, cellPhone, firstName, lastName);
-        System.out.println("/n" + registrationMessage);
+        System.out.println("\n" + registrationMessage);
           
         
         //Login info
         
-        System.out.println("/n==== Login ====");
+        System.out.println("\n==== Login ====");
         System.out.println("Please enter your Username: ");
         String loginusername = scanner.nextLine();
         
