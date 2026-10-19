@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany;
+package com.mycompany.progassignment1;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -82,6 +82,25 @@ public class Message {
          String hash = messageID.substring(0, 2) + ":" + messageNumber + ":" + firstWord + lastWord;
          
          return hash.toUpperCase();
+     }
+     
+     //Repient must contain the international code; reuese the Part1 regex check
+     public String checkRecipientCell() {
+         if (Login.checkCellPhoneNumber(recipient)){
+             return "Cell phone number successfully captured.";
+         }
+         return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
+     }
+     //message must be 250 characters or less
+     public String checkMessageLength(){
+         int length = messageText.length();
+         
+         if (length <= MAX_LENGTH){
+             return "Message ready to send.";
+     }
+         return "Message exceeds 250 characters by"
+                 + (length - MAX_LENGTH)
+                + "; please reduce the size.";
      }
     
     
