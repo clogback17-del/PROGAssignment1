@@ -23,6 +23,7 @@ public class Message {
     
     public static final int MAX_LENGTH = 250;
     public static final String JSON_FILE = "storedMessages.json";
+    private static final String CELL_PATTERN = "^\\+\\d{1,3}\\d{1,10}$";
     
     //shared across all messages while the program runs
     
@@ -84,24 +85,37 @@ public class Message {
          return hash.toUpperCase();
      }
      
-     //Repient must contain the international code; reuese the Part1 regex check
-     public String checkRecipientCell() {
-         if (Login.checkCellPhoneNumber(recipient)){
-             return "Cell phone number successfully captured.";
-         }
-         return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
-     }
+   public static boolean isValidRecipient(String number) {
+    return number != null && number.matches(CELL_PATTERN);
+}
+
+public static String recipientStatus(String number) {
+    if (isValidRecipient(number)) {
+        return "Cell phone number successfully captured.";
+    }
+    return "Cell phone number is incorrectly formatted or does not contain an international code. "
+            + "Please correct the number and try again.";
+}
+
+public String checkRecipientCell() {
+    return recipientStatus(recipient);
+}  
+    
+     
      //message must be 250 characters or less
-     public String checkMessageLength(){
-         int length = messageText.length();
-         
-         if (length <= MAX_LENGTH){
-             return "Message ready to send.";
-     }
-         return "Message exceeds 250 characters by"
-                 + (length - MAX_LENGTH)
-                + "; please reduce the size.";
-     }
+     public String checkMessageLength() {
+    return lengthStatus(messageText);
+}
+
+public static String lengthStatus(String text) {
+    int length = text == null ? 0 : text.length();
+    if (length <= MAX_LENGTH) {
+        return "Message ready to send.";
+    }
+    return "Message exceeds 250 characters by "
+            + (length - MAX_LENGTH)
+            + "; please reduce the size.";
+}
     public String sentMessage (int choice) {
         switch (choice){
             case 1:
@@ -113,14 +127,23 @@ public class Message {
             return "Press 0 to delete the message.";
 
         case 3:
-            storedMessages.add(this);
-    return "Message successfully stored.";
+            try {
+                storeMessage();
+                return "Message successfully stored.";
+            } catch (IOException e) {
+                return "Message could not be stored: " + e.getMessage();
+            }
 
         default:
             return "Invalid option.";
-    
         }
-    }
+}
+        
+    
+    
+    public static int returnTotalMessages() {
+    return totalMessagesSent;
+}
     
     public static String printMessages() {
     if (sentMessage.isEmpty()) {
@@ -135,9 +158,9 @@ public class Message {
 
     return output.toString().trim();
 }
-    public static int returnTotalMessages() {
-    return totalMessagesSent;
-}
+    
+    
+
 
 public String getDetails() {
     return "Message ID: " + messageID
@@ -145,6 +168,8 @@ public String getDetails() {
             + "\nRecipient: " + recipient
             + "\nMessage: " + messageText + "\n";
 }
+
+
 
 public static void reset() {
     sentMessage.clear();
@@ -170,5 +195,31 @@ public String getMessageText() {
 public int getMessageNumber() {
     return messageNumber;
 } 
+
+// Writes all stored messages to storedMessages.json
+public void storeMessage() throws IOException {
+    storedMessages.add(this);
+
+    try (FileWriter writer = new FileWriter(JSON_FILE)) {
+        writer.write("[\n");
+        for (int i = 0; i < storedMessages.size(); i++) {
+            Message m = storedMessages.get(i);
+            writer.write("  {\n");
+            writer.write("    \"messageID\": \"" + escapeJson(m.messageID) + "\",\n");
+            writer.write("    \"messageHash\": \"" + escapeJson(m.messageHash) + "\",\n");
+            writer.write("    \"recipient\": \"" + escapeJson(m.recipient) + "\",\n");
+            writer.write("    \"message\": \"" + escapeJson(m.messageText) + "\"\n");
+            writer.write(i < storedMessages.size() - 1 ? "  },\n" : "  }\n");
+        }
+        writer.write("]\n");
+    }
+}
+
+// Makes quotes and slashes safe inside JSON text
+private static String escapeJson(String text) {
+    return text.replace("\\", "\\\\")
+               .replace("\"", "\\\"")
+               .replace("\n", "\\n");
+}
     
 }
