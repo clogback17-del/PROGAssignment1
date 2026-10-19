@@ -1,0 +1,88 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+
+/**
+ *
+ * @author letlhogonolokgosiemang
+ * 
+ * 
+ */
+
+//message class represents one Quickchat message and keeps track of all messages sebt while the progam is running 
+public class Message {
+    
+    public static final int MAX_LENGTH = 250;
+    public static final String JSON_FILE = "storedMessages.json";
+    
+    //shared across all messages while the program runs
+    
+    private static final List<Message>
+            sentMessage = new ArrayList<>();
+    private static final List<Message>
+            storedMessages = new ArrayList<>();
+    private static int totalMessagesSent = 0;
+    
+    private final String messageID;
+    private final int messageNumber;
+    private final String recipient;
+    private final String messageText;
+    private final String messageHash;
+    
+    //normal constructor generates a random 10 digit message ID
+    
+    public Message (int messageNumber, String recipient, String messageText) {
+        this(generateMessageID(), messageNumber, recipient, messageText);
+        
+    }
+    
+    public Message (String messageID, int messageNumber, String recipient, String messageText){
+        this.messageID = messageID;
+        this.messageNumber = messageNumber;
+        this.recipient = recipient;
+        this.messageText = messageText;
+        this.messageHash = createMessageHash();
+        
+    }
+    public static String generateMessageID(){
+        Random random = new Random();
+        StringBuilder digits = new StringBuilder();
+        
+        while (digits.length() < 10){
+            digits.append(random.nextInt(10));
+        }
+        return digits.toString().substring(0, 10);
+    }
+     public boolean checkMessageID(){
+         return messageID != null &&
+                 messageID.length() <= 10;
+     }
+     
+     public String getMessageIDStatus(){
+         return "Message ID generated: " +
+                 messageID;
+     }
+     
+     public String createMessageHash(){
+         String[] words = 
+                 messageText.trim().split("\\s+");
+         String firstWord = words[0].replaceAll("[^a-zA-Z0-9]", "");
+         
+         String lastWord = words[words.length-1].replaceAll("[^a-zA-Z0-9]", "");
+         
+         String hash = messageID.substring(0, 2) + ":" + messageNumber + ":" + firstWord + lastWord;
+         
+         return hash.toUpperCase();
+     }
+    
+    
+}

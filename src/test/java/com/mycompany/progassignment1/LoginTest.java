@@ -51,7 +51,7 @@ public class LoginTest {
       
       @Test
       public void testCellphoneCorrectlyFormatted(){
-          assertTrue(login.checkCellPhoneNumber("+2783896876"));
+          assertTrue(Login.checkCellPhoneNumber("+27838968976"));
       }
       
       @Test 
