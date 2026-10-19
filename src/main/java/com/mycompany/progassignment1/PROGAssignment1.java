@@ -46,7 +46,7 @@ public class PROGAssignment1 {
         System.out.println("Please enter your Username: ");
         String loginusername = scanner.nextLine();
         
-        System.out.println("Pleasse enter your password: ");
+        System.out.println("Please enter your password: ");
         String loginPassword = scanner.nextLine();
         
         boolean isLoggedIn = loginSystem.loginuser(loginusername, loginPassword);
@@ -55,7 +55,12 @@ public class PROGAssignment1 {
           System.out.println(loginStatusMessage);
 
         
-        scanner.close();
+        // QuickChat only starts after a successful login
+if (isLoggedIn) {
+    QuickChat.start(scanner);
+}
+
+scanner.close();
         
     }
 }
