@@ -102,6 +102,73 @@ public class Message {
                  + (length - MAX_LENGTH)
                 + "; please reduce the size.";
      }
+    public String sentMessage (int choice) {
+        switch (choice){
+            case 1:
+            sentMessage.add(this);
+                totalMessagesSent++;
+                return "Message successfully sent.";
+                
+                case 2:
+            return "Press 0 to delete the message.";
+
+        case 3:
+            storedMessages.add(this);
+    return "Message successfully stored.";
+
+        default:
+            return "Invalid option.";
     
+        }
+    }
+    
+    public static String printMessages() {
+    if (sentMessage.isEmpty()) {
+        return "No messages sent yet.";
+    }
+
+    StringBuilder output = new StringBuilder();
+
+    for (Message message : sentMessage) {
+        output.append(message.getDetails()).append("\n");
+    }
+
+    return output.toString().trim();
+}
+    public static int returnTotalMessages() {
+    return totalMessagesSent;
+}
+
+public String getDetails() {
+    return "Message ID: " + messageID
+            + "\nMessage Hash: " + messageHash
+            + "\nRecipient: " + recipient
+            + "\nMessage: " + messageText + "\n";
+}
+
+public static void reset() {
+    sentMessage.clear();
+    storedMessages.clear();
+    totalMessagesSent = 0;
+}
+
+public String getMessageID() {
+    return messageID;
+}
+
+public String getMessageHash() {
+    return messageHash;
+}
+
+public String getRecipient() {
+    return recipient;
+}
+
+public String getMessageText() {
+    return messageText;
+}
+public int getMessageNumber() {
+    return messageNumber;
+} 
     
 }
