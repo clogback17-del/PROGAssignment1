@@ -57,7 +57,7 @@ public class PROGAssignment1 {
         
         // QuickChat only starts after a successful login
 if (isLoggedIn) {
-    QuickChat.start(scanner);
+        QuickChat.start(scanner, firstName + " " + lastName);
 }
 
 scanner.close();
