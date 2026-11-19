@@ -81,23 +81,16 @@ class Login {
     }
     
     // Check SA cell phone number (Regex required by rubric)
-    public boolean checkCellPhoneNumber(String cellPhone) {
-        
-        if (cellPhone == null){
-            return false;
-        }
-        // Regex: Starts with +27, followed by 9 digits
-        String regex = "^\\+27[0-9]{9}$"; 
-        return Pattern.matches(regex, cellPhone);
-    }
+    public static boolean checkCellPhoneNumber(String cellNumber) {
+    return cellNumber != null && cellNumber.matches("^\\+27[0-9]{9}$");
+}
     
     
            // Registers the user and returns the appropriate message
     public String registerUser(String username, String password, String cellPhone, String firstName, String lastName) {
         // Check Username
         if (!checkUserName(username)) {
-            return "Username is not correctly formatted; please ensure that your username "
-                    + " contains an underscore and is no more than five characters in length.";
+            return "Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.";
         }
         
         //  Check Password
@@ -140,8 +133,7 @@ class Login {
              return "Welcome " + firstName + ", " + lastName
                     + " it is great to see you again.";
          }
-            return "Username or password is incorrect, "
-                    + "please try again." ;
+            return "Username or password incorrect, please try again.";
      }
 
     
