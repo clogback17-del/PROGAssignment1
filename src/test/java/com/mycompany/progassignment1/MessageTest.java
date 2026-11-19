@@ -11,7 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
 /**
  *
  * @author letlhogonolokgosiemang
@@ -26,9 +27,16 @@ public class MessageTest {
     private static final String CELL_2 = "08575975889";
     private static final String TEXT_2 = "Hi Keegan, did you receive the payment?";
 
+       @TempDir
+    Path tempDir;
+
+    private String testFile;
+
     @BeforeEach
     void setUp() {
         Message.reset();
+        testFile = tempDir.resolve("testStored.json").toString();
+        Message.setJsonFile(testFile);
     }
 
     @Test
