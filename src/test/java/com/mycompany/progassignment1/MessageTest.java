@@ -99,15 +99,15 @@ public class MessageTest {
         new Message(ID_2, 1, CELL_2, TEXT_2).sentMessage(2);   // disregarded
         assertEquals(1, Message.returnTotalMessages());
     }
-
+    
     @Test
-    void printMessagesShowsDetailsInOrder() {
-        new Message(ID_1, 0, CELL_1, TEXT_1).sentMessage(1);
-        String expected = "Message ID: " + ID_1
-                + "\nMessage Hash: 00:0:HITONIGHT"
-                + "\nRecipient: " + CELL_1
-                + "\nMessage: " + TEXT_1 + "\n\n";
-        assertEquals(expected, Message.printMessages());
-    }  
+void printMessagesShowsDetailsInOrder() {
+    new Message(ID_1, 0, CELL_1, TEXT_1).sentMessage(1);
+    String expected = "Message ID: " + ID_1
+            + "\nMessage Hash: 00:0:HITONIGHT"
+            + "\nRecipient: " + CELL_1
+            + "\nMessage: " + TEXT_1;
+    assertEquals(expected, Message.printMessages());
+}
     
 }
